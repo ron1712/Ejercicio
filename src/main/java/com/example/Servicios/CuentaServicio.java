@@ -1,9 +1,6 @@
 package com.example.Servicios;
 
-import com.example.Entidades.Cliente;
-import com.example.Entidades.Cuenta;
-import com.example.Entidades.Movimiento;
-import com.example.Entidades.Persona;
+import com.example.Entidades.*;
 import com.example.Repositorio.ClienteRepositorio;
 import com.example.Repositorio.CuentaRepositorio;
 import com.example.Repositorio.MovimientoRepositorio;
@@ -49,19 +46,21 @@ public class CuentaServicio {
         movimiento.setValor(monto);
         movimiento.setTipoMovimiento(descripcion);
         movimiento.setFecha(new Date());
+        movimiento.setCuenta(cuenta);
         movimientoRepositorio.save(movimiento);
         cuenta.setSaldo(cuenta.getSaldo() + monto);
         cuentaRepositorio.save(cuenta);
 }
-    public Cuenta obtenerEstadoCuenta(Long clienteId, Date startDate, Date endDate) {
+    public List<Cuenta> obtenerEstadoCuenta(Long clienteId, Date startDate, Date endDate) {
         Cliente cliente = clienteRepositorio.findById(clienteId).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        List<Cuenta> cuentas = cuentaRepositorio.findByCliente((cliente));
+        List<Cuenta> cuentas = cuentaRepositorio.findByCliente(cliente);
 
         List<Cuenta> cuentaDetalles = cuentas.stream().map(cuenta -> {
-            List<Movimiento> movimientos = movimientoRepositorio.findByCuentaIdAndFechaBetween((cuenta.getId()), startDate, endDate);
-            return new Cuenta(cuenta, movimientos);
+            List<Movimiento> movimientos = movimientoRepositorio.findByCuentaIdAndFechaBetween(cuenta.getId(), startDate, endDate);
+            cuenta.setMovimientos(movimientos);
+            return cuenta;
         }).collect(Collectors.toList());
 
-        return new Cuenta(cliente, cuentaDetalles);
+        return cuentaDetalles;
     }
 }

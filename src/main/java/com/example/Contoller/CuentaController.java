@@ -3,6 +3,7 @@ package com.example.Contoller;
 import com.example.Entidades.Cliente;
 import com.example.Entidades.Cuenta;
 import com.example.Entidades.Movi;
+import com.example.Entidades.ReporteResultado;
 import com.example.Servicios.ClienteServicio;
 import com.example.Servicios.CuentaServicio;
 import jakarta.persistence.Entity;
@@ -46,12 +47,12 @@ public class CuentaController {
         cuentaServicio.elminarCuentas(idCuenta);
     }
 
-    @PostMapping("/movimiento")
-    public void registrarMovimiento(@RequestBody Movi movimientoDTO) throws Exception {
-        cuentaServicio.registrarMovimiento(1, movimientoDTO.getMonto(), movimientoDTO.getDescripcion());
+    @PostMapping("/{idCliente}/movimiento")
+    public void registrarMovimiento(@PathVariable("idCliente") long  idCliente, @RequestBody Movi movimientoDTO) throws Exception {
+        cuentaServicio.registrarMovimiento(idCliente, movimientoDTO.getMonto(), movimientoDTO.getDescripcion());
     }
     @GetMapping("/reportes")
-    public Cuenta obtenerEstadoCuenta(
+    public List<Cuenta> obtenerEstadoCuenta(
             @RequestParam Long clienteId,
             @RequestParam String fechaInicio,
             @RequestParam String fechaFin) throws ParseException {
