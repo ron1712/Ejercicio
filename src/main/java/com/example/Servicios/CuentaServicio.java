@@ -4,7 +4,6 @@ import com.example.Entidades.*;
 import com.example.Repositorio.ClienteRepositorio;
 import com.example.Repositorio.CuentaRepositorio;
 import com.example.Repositorio.MovimientoRepositorio;
-import com.example.Repositorio.PersonaRepositorio;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
