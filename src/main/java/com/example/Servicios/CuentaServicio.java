@@ -35,7 +35,6 @@ public class CuentaServicio {
     public  void actualizarCuentas(Cuenta cuenta) {
         cuentaRepositorio.save(cuenta);
     }
-
     @Transactional
     public void registrarMovimiento(long cuentaId, long monto, String descripcion) throws Exception {
         Cuenta cuenta = cuentaRepositorio.findById(cuentaId).orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
